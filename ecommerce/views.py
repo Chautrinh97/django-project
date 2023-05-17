@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
-from datetime import datetime, timedelta
+from datetime import timedelta
 from .models import *
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
@@ -14,7 +14,7 @@ import threading
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .forms import CustomerLoginForm, CustomerRegisterForm
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib import messages
 from django.urls import reverse
 

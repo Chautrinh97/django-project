@@ -148,7 +148,7 @@ class ImportOrderAdmin(admin.ModelAdmin):
 class PurchaseOrderItemInline(admin.TabularInline):
     model = PurchaseOrderItem
     extra = 1
-    fields = ('preview', 'product_name', 'quantity', 'price',)
+    fields = ('preview', 'product','product_name', 'quantity', 'price',)
     readonly_fields = ('preview', 'product', 'product_name', 'quantity', 'price')
 
     def preview(self, obj):
@@ -168,11 +168,11 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
     inlines = [PurchaseOrderItemInline]
     fields = (
         'customer_name', 'customer_phone', 'receiver_name', 'receiver_phone', 'ordered_time', 'confirmed_time',
-        'shipped_time', 'status'
+        'shipped_time','shipping_address', 'status'
     )
     readonly_fields = (
         'customer_name', 'customer_phone', 'receiver_name', 'receiver_phone', 'ordered_time', 'confirmed_time',
-        'shipped_time',
+        'shipped_time','shipping_address',
     )
     list_display = ('id', 'customer_name', 'ordered_time', 'confirmed_time', 'shipped_time', 'status')
     list_per_page = 20
