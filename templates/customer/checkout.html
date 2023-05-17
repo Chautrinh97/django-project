@@ -1,0 +1,86 @@
+{% extends 'product/../base.html' %}
+{% load humanize %}
+{% load math_tag %}
+{% block title %} Thanh toán {% endblock %}
+{% block content %}
+    <div class="body-wrapper">
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <ul>
+                        <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                        <li class="active">Thanh toán</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-area pt-60 pb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <form id="checkoutForm" method="POST">
+                        {% csrf_token %}
+                        <div class="checkbox-form">
+                            <h3>Thông tin khách hàng</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Tên người nhận <span class="required">*</span></label>
+                                        <input name="name" placeholder="Nhập tên người nhận" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Số điện thoại người nhận <span class="required">*</span></label>
+                                        <input name="phone-number" placeholder="Nhập số điện thoại người nhận" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Địa chỉ giao hàng khác?</label>
+                                        <input name="shipping-address" placeholder="Nhập địa chỉ giao hàng khác" type="text" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="your-order">
+                        <h3>Đơn hàng của bạn</h3>
+                        <div class="your-order-table table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="cart-product-name">Sản phẩm</th>
+                                    <th class="cart-product-total">Tổng giá</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product_id, product_data in cart.items %}
+                                    <tr class="cart_item">
+                                        <td class="cart-product-name"><a href="{% url 'single-product' slug=product_data.slug %}">{{ product_data.name }}</a><strong
+                                                class="product-quantity">
+                                            × {{ product_data.quantity }}</strong></td>
+                                        <td class="cart-product-total"><span class="amount" >{{ product_data.quantity|mul:product_data.price|floatformat:2|intcomma }} đ</span></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr class="order-total">
+                                    <th>Tổng giá trị</th>
+                                    <td><strong><span class="amount" style="color: red;font-size: 20px">{{ cart|total|floatformat:2|intcomma }} đ</span></strong></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="order-button-payment">
+                            <input value="Place order" form = "checkoutForm" type="submit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1063,9 +1063,11 @@ textarea:focus {
   margin-right: 10px;
 }
 
-.product-details-images .lg-image img, 
-.product-details-thumbs .sm-image img {
+.product-details-images .lg-image img{
   width: 100%;
+}
+.product-details-thumbs .sm-image img {
+	width: 50%;
 }
 
 .product-details-thumbs .sm-image {
@@ -1768,19 +1770,20 @@ textarea:focus {
 .hb-menu nav > ul > li:hover > a::after {
 		color: #ffffff;
 }
-.hb-menu nav > ul > li > a::after {
-	content: "\f107";
-	position: absolute;
-	top: 8px;
-	right: 15px;
-	font-family: fontawesome;
-	font-size: 18px;
-	transition: all 0.3s ease-in-out;
-	color: #242424;
-}
-.hb-menu nav > ul > li:nth-child(n+5) > a::after {
-	content: none;
-}
+
+/*.hb-menu nav > ul > li > a::after {*/
+/*	content: "\f107";*/
+/*	position: absolute;*/
+/*	top: 8px;*/
+/*	right: 15px;*/
+/*	font-family: fontawesome;*/
+/*	font-size: 18px;*/
+/*	transition: all 0.3s ease-in-out;*/
+/*	color: #242424;*/
+/*}*/
+/*.hb-menu nav > ul > li:nth-child(n+5) > a::after {*/
+/*	content: none;*/
+/*}*/
 .hb-menu nav > ul > li:hover  a::after {
 	transform: rotate(180deg);
 }
@@ -1903,7 +1906,7 @@ textarea:focus {
 	position: static !important;
 }
 .megamenu-static-holder .hb-megamenu, .megamenu-holder .hb-megamenu {
-	background-image: url(images/menu/li-bg-menu.jpg);
+	/*background-image: url(images/menu/music-background.jpg);*/
 	background-size: cover;
 	background-position: top;
 	background-repeat: no-repeat;
@@ -2088,7 +2091,7 @@ textarea:focus {
 	display: inline-block;
 	position: relative;
 	padding-right: 30px;
-	z-index: 99;
+	/*z-index: 99;*/
 }
 .li-product-menu > li > a > span {
 	position: relative;
@@ -2195,7 +2198,7 @@ textarea:focus {
 	right: 15px;
 	position: absolute;
 	top: 20px;
-	z-index: 99;
+	/*z-index: 99;*/
 	height: 40px;
 	width: 40px;
 	line-height: 40px;
@@ -4031,8 +4034,8 @@ thead {
 .table-content table td.product-subtotal {
 	font-size: 16px;
 	font-weight: 700;
-	font-family: 'Montserrat', sans-serif;
-	color: #414141;
+	/*font-family: 'Montserrat', sans-serif;*/
+	color: #dc1717;
 }
 .table-content table td .cart-plus-minus {
 	float: none;
@@ -4104,7 +4107,7 @@ thead {
 .cart-page-total li:last-child {
 	border-bottom: 0;
 }
-.cart-page-total>a {
+.cart-page-total>button {
 	background-color: #333;
 	border: 1px solid #333;
 	color: #fff;
@@ -4115,7 +4118,7 @@ thead {
 	-webkit-transition: all 0.3s ease 0s;
 	transition: all 0.3s ease 0s;
 }
-.cart-page-total>a:hover {
+.cart-page-total>button:hover {
 	background: #fed700;
 	border-color: #fed700;
 }
@@ -4794,6 +4797,29 @@ span.required {
   background: #242424 none repeat scroll 0 0;
   color: #fff;
 }
+.btn-filter {
+	background: #dddddd none repeat scroll 0 0;
+	border-color: rgba(0, 0, 0, 0);
+	box-shadow: 0.0625rem 0.0625rem 0.0625rem 0 rgba(0, 0, 0, 0.1);
+	color: #333333;
+	cursor: pointer;
+	font-size: 14px;
+	font-size: 0.875rem;
+	line-height: 15px;
+	padding: 5px;
+	-webkit-transition: all 0.3s ease-in-out 0s;
+	transition: all 0.3s ease-in-out 0s;
+	margin-top: 30px;
+}
+.btn-filter::before {
+	content: "\f0b0";
+	font-family: "fontawesome";
+	margin-right: 15px;
+}
+.btn-filter:hover {
+  background: #ff0000 none repeat scroll 0 0;
+  color: #fff;
+}
 .category-sub-menu ul li ul {
   display: none;
   margin-top: 10px;
@@ -4948,7 +4974,7 @@ span.required {
 	height: 30px;
 	line-height: 30px;
 	width: 320px;
-	z-index: 999;
+	/*z-index: 999;*/
 }
 @media only screen and (max-width: 767px) {
 	.product-short .nice-select {
@@ -4958,7 +4984,7 @@ span.required {
 .product-short .nice-select .list {
   border-radius: 0px;
   width: 100%;
-  z-index: 99;
+  /*z-index: 99;*/
 }
 .shop-top-bar {
   padding: 15px;
@@ -5430,6 +5456,19 @@ span.required {
 .error-button a:hover{background:#242424;color:#fff;}
 .small-version {
   display: none;
+}
+.cart-product-image{
+	max-height: 200px;
+	max-width: 200px;
+}
+.cart-product-name{
+	max-width: 400px;
+	text-overflow: ellipsis;
+}
+.cart-total-price{
+	font-size: 16px;
+	font-weight: 700;
+	color: #ff0000;
 }
 /*----------------------------------------------------------------------------------------------------*/
 /*------------------------------------------> The End <-----------------------------------------------*/

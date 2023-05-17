@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Xin chào {{customer.name}}
+
+Vui lòng truy cập vào đường dẫn dưới đây để xác thực tài khoản:
+
+{{ protocol }}://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

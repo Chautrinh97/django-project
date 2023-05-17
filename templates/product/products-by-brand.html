@@ -1,0 +1,380 @@
+{% extends 'product/../base.html' %}
+{% load humanize %}
+{% block title %} {{ brand.name }} {% endblock %}
+{% block content %}
+    <!-- Begin Body Wrapper -->
+    <div class="body-wrapper">
+        <!-- Begin Li's Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <ul>
+                        <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                        <li class="active"> {{ brand.name }} </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Li's Breadcrumb Area End Here -->
+        <!-- Begin Li's Content Wraper Area -->
+        <div class="content-wraper pt-60 pb-60 pt-sm-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 order-1 order-lg-2">
+                        <!-- shop-top-bar start -->
+                        <div class="shop-top-bar mt-30">
+                            <div class="shop-bar-inner">
+                                <div class="product-view-mode">
+                                    <!-- shop-item-filter-list start -->
+                                    <ul class="nav shop-item-filter-list" role="tablist">
+                                        <li class="active" role="presentation"><a aria-selected="true"
+                                                                                  class="active show" data-toggle="tab"
+                                                                                  role="tab" aria-controls="grid-view"
+                                                                                  href="#grid-view"><i
+                                                class="fa fa-th"></i></a></li>
+                                        <li role="presentation"><a data-toggle="tab" role="tab"
+                                                                   aria-controls="list-view" href="#list-view"><i
+                                                class="fa fa-th-list"></i></a></li>
+                                    </ul>
+                                    <!-- shop-item-filter-list end -->
+                                </div>
+                                <div class="toolbar-amount">
+                                    {% if products.paginator.count %}
+                                        <span>Hiện {{ products.start_index }}-{{ products.end_index }} trong tổng số {{ products.paginator.count }} sản phẩm.</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- product-select-box start -->
+                            <div class="product-select-box">
+                                <div class="product-short">
+                                    <p>Sắp xếp theo:</p>
+                                    <select class="nice-select" name="order-by"
+                                            form = "filterForm" id = "orderBy"
+                                            onchange="onOrderChange(this)">
+                                        <option value="def" disabled{% if order_by is None %} selected {%endif%} >Sắp xếp . . </option>
+                                        <option value="asc" {% if order_by == "asc"%} selected {%endif%}>Giá từ thấp tới cao</option>
+                                        <option value="desc"{% if order_by == "desc"%} selected {%endif%}>Giá từ cao tới thấp</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- product-select-box end -->
+                        </div>
+                        <!-- shop-top-bar end -->
+                        <!-- shop-products-wrapper start -->
+                        <div class="shop-products-wrapper">
+                            <div class="tab-content">
+                                <div id="grid-view" class="tab-pane fade active show" role="tabpanel">
+                                    <div class="product-area shop-product-area">
+                                        {% if products %}
+                                            <div class="row">
+                                                {% for product in products %}
+                                                    <div class="col-lg-4 col-md-4 col-sm-6 mt-40">
+                                                        <!-- single-product-wrap start -->
+                                                        <div class="single-product-wrap">
+                                                            <div class="product-image">
+                                                                <a href="{% url 'single-product' slug=product.slug %}">
+                                                                    <img src="{{ product.images.first.imageURL }}"
+                                                                         alt="Product Image">
+                                                                </a>
+                                                                {% if product.created_at >= time %}
+                                                                    <span class="sticker">Mới</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="product_desc">
+                                                                <div class="product_desc_info">
+                                                                    <div class="product-review">
+                                                                        <h5 class="manufacturer">
+                                                                            <a href="{% url 'products-by-brand' slug=product.brand.slug %}">{{ product.brand }}</a>
+                                                                        </h5>
+                                                                        <div class="rating-box">
+                                                                            <ul class="rating">
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li class="no-star"><i
+                                                                                        class="fa fa-star-o"></i></li>
+                                                                                <li class="no-star"><i
+                                                                                        class="fa fa-star-o"></i></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h4><a class="product_name"
+                                                                           href="{% url 'single-product' slug=product.slug %}">{{ product.name }}</a>
+                                                                    </h4>
+                                                                    <div class="price-box">
+                                                                        <span class="new-price">{{ product.price|floatformat:2|intcomma }} đ</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="add-actions">
+                                                                    <ul class="add-actions-link">
+                                                                        <li class="add-cart active" onclick="addToCart({{ product.id }})">
+                                                                            <span>Thêm vào giỏ </span><i
+                                                                                class="fa fa-shopping-cart"></i>
+                                                                        </li>
+                                                                        <li><a href="#" title="Xem trước"
+                                                                               class="quick-view-btn"
+                                                                               data-toggle="modal"
+                                                                               data-target="#productModal"
+                                                                               onclick=showProductDetail({{ product.id }})><i
+                                                                                class="fa fa-eye"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- single-product-wrap end -->
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="row">
+                                                <div class="col">
+                                                    Không có sản phẩm nào
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div id="list-view" class="tab-pane fade product-list-view" role="tabpanel">
+                                    <div class="row">
+                                        {% if products %}
+                                            <div class="col">
+                                                {% for product in products %}
+                                                    <div class="row product-layout-list">
+                                                        <div class="col-lg-3 col-md-5 ">
+                                                            <div class="product-image">
+                                                                <a href="{% url 'single-product' slug=product.slug %}">
+                                                                    <img src="{{ product.images.first.imageURL }}"
+                                                                         alt="Product Image">
+                                                                </a>
+                                                                {% if product.created_at >= time %}
+                                                                    <span class="sticker">Mới</span>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 col-md-7">
+                                                            <div class="product_desc">
+                                                                <div class="product_desc_info">
+                                                                    <div class="product-review">
+                                                                        <h5 class="manufacturer">
+                                                                            <a href="{% url 'products-by-brand' slug=product.brand.slug %}">{{ product.brand }}</a>
+                                                                        </h5>
+                                                                        <div class="rating-box">
+                                                                            <ul class="rating">
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                                <li class="no-star"><i
+                                                                                        class="fa fa-star-o"></i></li>
+                                                                                <li class="no-star"><i
+                                                                                        class="fa fa-star-o"></i></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h4><a class="product_name"
+                                                                           href="{% url 'single-product' slug=product.slug %}">{{ product.name }}</a>
+                                                                    </h4>
+                                                                    <div class="price-box">
+                                                                        <span class="new-price">{{ product.price|floatformat:2|intcomma }} đ</span>
+                                                                    </div>
+                                                                    <p>{{ product.description }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="shop-add-action mb-xs-30">
+                                                                <ul class="add-actions-link">
+                                                                    <li class="add-cart" onclick="addToCart({{ product.id }})">
+                                                                        <span>Thêm vào giỏ</span><i
+                                                                            class="fa fa-shopping-cart"></i>
+                                                                    </li>
+                                                                    <li><a href="#" class="quick-view"
+                                                                           data-toggle="modal"
+                                                                           data-target="#productModal"
+                                                                           onclick=showProductDetail({{ product.id }})><i
+                                                                            class="fa fa-eye"></i>Xem trước</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col">
+                                                Không có sản phẩm nào.
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if products.paginator.count %}
+                                    <div class="paginatoin-area">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 pt-xs-15">
+                                                <p>Hiện {{ products.start_index }}-{{ products.end_index }} trong tổng
+                                                    số {{ products.paginator.count }} sản phẩm.</p>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <ul class="pagination-box pt-xs-20 pb-xs-15">
+                                                    {% if products.has_previous %}
+                                                        <li><a href="?page=1" class="First">Đầu</a></li>
+                                                        {#                                                <li class="active"><a href="#">1</a></li>#}
+                                                        <li><a href="?page={{ products.previous_page_number }}"><i
+                                                                class="fa fa-angle-double-left"></i></a></li>
+                                                    {% endif %}
+                                                    {% if products.paginator.num_pages > 1 %}
+                                                        {% for i in products.paginator.page_range %}
+                                                            {% if i == products.number %}
+                                                                <li class="active"><a
+                                                                        href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                                                                </li>
+                                                            {% else %}
+                                                                <li>
+                                                                    <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if products.has_next %}
+                                                        <li>
+                                                            <a href="?page={{ products.next_page_number }}"><i
+                                                                    class="fa fa-angle-double-right"></i></a></li>
+                                                        <li>
+                                                            <a href="?page={{ products.paginator.num_pages }}"
+                                                               class="Last">Cuối</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- shop-products-wrapper end -->
+                    </div>
+                    <div class="col-lg-3 order-2 order-lg-1">
+                        <!--sidebar-categores-box start  -->
+                        <div class="sidebar-categores-box mt-sm-30 mt-xs-30">
+                            <div class="sidebar-title">
+                                <h2>Lọc sản phẩm</h2>
+                            </div>
+                            <form action="{{ request.path }}" method="GET" id="filterForm">
+                                <!-- btn-clear-all start -->
+                                <button class="btn-clear-all mb-sm-30 mb-xs-30" onclick="clearFilter()">Bỏ lọc</button>
+                                <button type="submit" class="btn-filter mb-sm-30 mb-xs-30">Lọc</button>
+
+                                <!-- btn-clear-all end -->
+                                <!-- filter-sub-area start -->
+                                <div class="filter-sub-area">
+                                {% if types_categories.items|length > 1 %}
+                                    {% for type, categories in types_categories.items %}
+                                        <h5 class="filter-sub-titel">{{ type.name }}</h5>
+                                        <div class="categori-checkbox">
+                                            <ul>
+                                                {% for category in categories %}
+                                                    <li><input class="filter-checkbox"
+                                                               type="checkbox"
+                                                               name="categories"
+                                                               value="{{ category.slug }}"
+                                                            {% if category.slug in selected_categories %}
+                                                               checked
+                                                            {% endif %}> {{ category.name }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Content Wraper Area End Here -->
+        <div class="modal fade modal-wrapper" id="productModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <input type="hidden" id="productPreviewId"/>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-inner-area row">
+                            <div class="col-lg-5 col-md-6 col-sm-6">
+                                <!-- Product Details Left -->
+                                <div class="product-details-left">
+                                    <div class="product-details-images slider-navigation-1">
+                                        <img class="lg-image" id="previewProductImage"/>
+                                    </div>
+                                </div>
+                                <!--// Product Details Left -->
+                            </div>
+
+                            <div class="col-lg-7 col-md-6 col-sm-6">
+                                <div class="product-details-view-content pt-60">
+                                    <div class="product-info">
+                                        <h2 id="productPreviewName"></h2>
+                                        Thương hiệu: <a id="productBrandLink" href="#"><span class="product-details-ref"
+                                                                                             id="productPreviewBrand"></span></a>
+                                        <div class="rating-box pt-20">
+                                            <ul class="rating rating-with-review-item">
+                                                <li><i class="fa fa-star-o"></i></li>
+                                                <li><i class="fa fa-star-o"></i></li>
+                                                <li><i class="fa fa-star-o"></i></li>
+                                                <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                <li class="review-item"><a href="#">Xem bình luận</a></li>
+                                                <li class="review-item"><a href="#">Viết đánh giá</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="price-box pt-20">
+                                            <span class="new-price new-price-2" id="productPreviewPrice"></span>
+                                        </div>
+                                        <div class="product-desc">
+                                            <p>
+                                            <span id="productPreviewDescription">
+                                            </span>
+                                            </p>
+                                        </div>
+                                        <div class="single-add-to-cart">
+                                            <form action="#" class="cart-quantity">
+                                                <div class="quantity">
+                                                    <label>Số lượng</label>
+                                                    <div class="cart-plus-minus">
+                                                        <input class="cart-plus-minus-box" id="productPreviewQuantity" value="1" type="text">
+                                                        <div class="dec qtybutton"><i class="fa fa-angle-down"></i>
+                                                        </div>
+                                                        <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
+                                                    </div>
+                                                </div>
+                                                <button class="add-to-cart" id="productPreviewAddToCart" type="submit">
+                                                    <span>Thêm vào giỏ </span><i class="fa fa-shopping-cart"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="product-additional-info pt-25">
+                                            <div class="product-social-sharing pt-25">
+                                                <ul>
+                                                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i>Facebook</a>
+                                                    </li>
+                                                    <li class="twitter"><a href="#"><i class="fa fa-twitter"></i>Twitter</a>
+                                                    </li>
+                                                    <li class="google-plus"><a href="#"><i
+                                                            class="fa fa-google-plus"></i>Google +</a></li>
+                                                    <li class="instagram"><a href="#"><i class="fa fa-instagram"></i>Instagram</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body Wrapper End Here -->
+{% endblock %}

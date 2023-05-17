@@ -1,0 +1,113 @@
+{% extends 'product/../base.html' %}
+{% load humanize %}
+{% load math_tag %}
+{% load dictionary_tag %}
+{% block title %} {{ brand.name }} {% endblock %}
+{% block content %}
+    <div class="body-wrapper">
+        <div class="Shopping-cart-area pt-60 pb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        {% for message in messages %}
+                            {% if message %}
+                                <div class="alert {{ message.tags }} alert-dismissable" role="alert">
+                                    <strong>
+                                        {{ message }}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="li-product-remove">Xóa</th>
+                                        <th class="li-product-thumbnail">Ảnh</th>
+                                        <th class="cart-product-name">Tên sản phẩm</th>
+                                        <th class="li-product-price">Đơn giá</th>
+                                        <th class="li-product-quantity">Số lượng</th>
+                                        <th class="li-product-subtotal">Tổng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if cart.items|length > 0 %}
+                                        {% for product_id, product_data in cart.items %}
+                                            <input type="hidden" name="product-id" value="{{ product_id }}">
+                                            <tr>
+                                                <td class="li-product-remove"><a
+                                                        href="{% url 'delete-in-cart' %}?product_id={{ product_id }}"><i
+                                                        class="fa fa-times"></i></a></td>
+                                                <td class="li-product-thumbnail">
+                                                    <a href="{% url 'single-product' slug=product_data.slug %}">
+                                                        <img src="{{ product_data.imageURL }}"
+                                                             class="cart-product-image" alt="Product Image">
+                                                    </a>
+                                                </td>
+                                                <td class="li-product-name"><a
+                                                        href="{% url 'single-product' slug=product_data.slug %}">{{ product_data.name }}</a>
+                                                </td>
+                                                <td class="li-product-price"><span
+                                                        class="amount">{{ product_data.price }} đ</span></td>
+                                                <td class="quantity">
+                                                    <label>Số lượng</label>
+                                                    <div class="cart-plus-minus">
+                                                        <input class="cart-plus-minus-box" name="quantity"
+                                                               value="{{ product_data.quantity }}" type="text">
+                                                        <div class="dec qtybutton"><i class="fa fa-angle-down"></i>
+                                                        </div>
+                                                        <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
+                                                    </div>
+                                                    {% if product_id|iskey:quantity_errors %}
+                                                        <span class="error-text">Chỉ còn
+                                                        {{ quantity_errors|get:product_id }} sản phẩm.
+                                                    {% endif %}
+                                                </td>
+                                                <td><span
+                                                        class="amount cart-total-price">{{ product_data.quantity|mul:product_data.price|floatformat:2|intcomma }} đ</span>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6">Không có sản phẩm nào trong giỏ hàng.</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if cart.items|length > 0 %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="coupon-all">
+                                            <div class="coupon2">
+                                                <input class="button" name="update_cart" value="Cập nhật giỏ hàng"
+                                                       type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 ml-auto">
+                                        <div class="cart-page-total">
+                                            <h2>Tổng giá giỏ hàng</h2>
+                                            <ul>
+                                                <li>Tổng cộng: <span
+                                                        class="product-subtotal"
+                                                        style="color: red;font-size: 20px">{{ cart|total|floatformat:2|intcomma }} đ</span>
+                                                </li>
+                                            </ul>
+                                            <button type="submit" name="checkout">Thanh toán</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

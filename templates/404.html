@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+{% load humanize %}
+{% block title %} 404 {% endblock %}
+{% block content %}
+    <div class="body-wrapper">
+        <div class="error404-area pt-30 pb-60">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="error-wrapper text-center ptb-50 pt-xs-20">
+                                <div class="error-text">
+                                    <h1>404</h1>
+                                    <h2>Ôi hỏng, không tìm thấy trang</h2>
+                                    <p>Trang bạn tìm kiếm không tồn tại hoặc đã bị xóa</p>
+                                </div>
+                                <div class="error-button">
+                                    <a href="{% url 'home-page' %}">Về trang chủ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+
+

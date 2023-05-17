@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+{% load static %}
+{% load humanize %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <!-- Material Design Iconic Font-V2.2.0 -->
+    <link rel="stylesheet" href="{% static 'css/material-design-iconic-font.min.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- Font Awesome Stars-->
+    <link rel="stylesheet" href="{% static 'css/fontawesome-stars.css' %}">
+    <!-- Meanmenu CSS -->
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <!-- Slick Carousel CSS -->
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!-- Jquery-ui CSS -->
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <!-- Venobox CSS -->
+    <link rel="stylesheet" href="{% static 'css/venobox.css' %}">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <!-- Bootstrap V4.1.3 Fremwork CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Helper CSS -->
+    <link rel="stylesheet" href="{% static 'css/helper.css' %}">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- Modernizr js -->
+    <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+</head>
+<body>
+<div class="header">
+    <!-- Begin Header Top Area -->
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                <!-- Begin Header Top Left Area -->
+                <div class="col-lg-3 col-md-4">
+                    <div class="header-top-left">
+                        <ul class="phone-wrap">
+                            <li><span>Miễn phí vận chuyển | Đã bao gồm thuế
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Header Top Left Area End Here -->
+                <!-- Begin Header Top Right Area -->
+                <div class="col-lg-9 col-md-8">
+                    <div class="header-top-right">
+                        <ul class="ht-menu">
+                            <!-- Begin Setting Area -->
+                            <li>
+                                {% if customer %}
+                                    <div class="ht-setting-trigger">
+                                        <span><i class="fa fa-user"></i> {{ customer.name }}</span>
+                                    </div>
+                                    <div class="setting ht-setting">
+                                        <ul class="ht-setting-list">
+                                            <li><a href="{% url 'personal-info' %}">Thông tin riêng</a></li>
+                                            <li><a href="{% url 'logout' %}">Đăng xuất</a></li>
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <div class="ht-setting-trigger">
+                                        <span><i class="fa fa-user"></i> Cài đặt</span>
+                                    </div>
+                                    <div class="setting ht-setting">
+                                        <ul class="ht-setting-list">
+                                            <li><a href="{% url 'register' %}">Đăng ký</a></li>
+                                            <li><a href="{% url 'login' %}">Đăng nhập</a></li>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Header Top Right Area End Here -->
+            </div>
+        </div>
+    </div>
+    <!-- Header Top Area End Here -->
+    <!-- Begin Header Middle Area -->
+    <div class="header-middle pl-sm-0 pr-sm-0 pl-xs-0 pr-xs-0">
+        <div class="container">
+            <div class="row d-flex align-items-center">
+                <!-- Begin Header Logo Area -->
+                <div class="col-lg-3">
+                    <div class="logo pb-sm-30 pb-xs-30">
+                        <a href="{% url 'home-page' %}">
+                            <img src="{% static 'images/menu/logo/mylogo.png' %}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- Header Logo Area End Here -->
+                <!-- Begin Header Middle Right Area -->
+                <div class="col-lg-9 pl-0 ml-sm-15 ml-xs-15">
+                    <!-- Begin Header Middle Searchbox Area -->
+                    <form action="{% url 'search-product' %}" class="hm-searchbox" method="GET">
+                        <input type="text" name="query" {% if query %} value="{{ query }}" {% endif %}
+                               required aria-required="true" placeholder="Tìm kiếm sản phẩm hoặc thương hiệu">
+                        <button class="li-btn" type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                    <!-- Header Middle Searchbox Area End Here -->
+                    <!-- Begin Header Middle Right Area -->
+                    <div class="header-middle-right">
+                        <ul class="hm-menu">
+                            <!-- Begin Header Mini Cart Area -->
+                            <li class="hm-minicart">
+                                <div class="hm-minicart-trigger">
+                                    <span class="item-icon"></span>
+                                    <span class="item-text">Giỏ hàng
+                                    <span class="cart-item-count" id="cartItemCount">
+                                        {% if num_in_cart %}
+                                            {{ num_in_cart }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </span>
+                                </span>
+                                </div>
+                                <span></span>
+                                <div class="minicart">
+                                    <ul class="minicart-product-list" id="miniCartProduct">
+                                        {% if minicart %}
+                                            {% for product_id, product_data in minicart.items %}
+                                                <li>
+                                                    <a href="{% url 'single-product' slug=product_data.slug %}"
+                                                       class="minicart-product-image">
+                                                        <img src="{{ product_data.imageURL }}"
+                                                             alt="cart products">
+                                                    </a>
+                                                    <div class="minicart-product-details">
+                                                        <h6>
+                                                            <a href="{% url 'single-product' slug=product_data.slug %}">{{ product_data.name }}</a>
+                                                        </h6>
+                                                        <span>{{ product_data.price|floatformat|intcomma:2 }} đ</span>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                    <div class="minicart-button">
+                                        <a href="{% url 'show-cart' %}" class="li-button li-button-fullwidth li-button-dark">
+                                            <span>Xem toàn bộ</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- Header Mini Cart Area End Here -->
+                        </ul>
+                    </div>
+                    <!-- Header Middle Right Area End Here -->
+                </div>
+                <!-- Header Middle Right Area End Here -->
+            </div>
+        </div>
+    </div>
+    <!-- Header Middle Area End Here -->
+    <!-- Begin Header Bottom Area -->
+    <div class="header-bottom header-sticky d-none d-lg-block d-xl-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Begin Header Bottom Menu Area -->
+                    <div class="hb-menu">
+                        <nav>
+                            <ul>
+                                <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                                <li><a href="{% url 'products-shop' type='new' %}">Sản phẩm mới</a></li>
+                                <li><a href="{% url 'products-shop' type='feature' %}">Sản phẩm đặc trưng</a></li>
+                                <li class="megamenu-holder"><a href="#">Thương hiệu</a>
+                                    <ul class="megamenu hb-megamenu">
+                                        <li><a href="{% url 'all-brands' %}">Xem tất cả thương hiệu</a>
+                                            {% if all_brands %}
+                                                <ul>
+                                                    {% for brand in all_brands %}
+                                                        <li>
+                                                            <a href="{% url 'products-by-brand' slug=brand.slug %}">{{ brand.name }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-holder"><a href="#">Nhạc cụ</a>
+                                    <ul class="hb-dropdown">
+                                        {% if all_types_categories %}
+                                            {% for type, categories in all_types_categories.items %}
+                                                <li class="sub-dropdown-holder"><a
+                                                        href="{% url 'products-by-type' slug=type.slug %}">{{ type.name }}</a>
+                                                    {% if categories %}
+                                                        <ul class="hb-dropdown hb-sub-dropdown">
+                                                            {% for category in categories %}
+                                                                <li>
+                                                                    <a href="{% url 'products-by-category' slug=category.slug %}">{{ category.name }}</a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                                <li><a href="#">Thông tin chung</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Header Bottom Menu Area End Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Bottom Area End Here -->
+</div>
+
+{% block content %}
+{% endblock %}
+
+<div class="footer">
+    <!-- Begin Footer Static Top Area -->
+    <div class="footer-static-top">
+        <div class="container">
+            <!-- Begin Footer Shipping Area -->
+            <div class="footer-shipping pt-60 pb-55 pb-xs-25">
+                <div class="row">
+                    <!-- Begin Li's Shipping Inner Box Area -->
+                    <div class="col-lg-3 col-md-6 col-sm-6 pb-sm-55 pb-xs-55">
+                        <div class="li-shipping-inner-box">
+                            <div class="shipping-icon">
+                                <img src="{% static 'images/shipping-icon/1.png' %}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-text">
+                                <h2>Miễn phí vận chuyển</h2>
+                                <p>Và miễn phí trả hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Li's Shipping Inner Box Area End Here -->
+                    <!-- Begin Li's Shipping Inner Box Area -->
+                    <div class="col-lg-3 col-md-6 col-sm-6 pb-sm-55 pb-xs-55">
+                        <div class="li-shipping-inner-box">
+                            <div class="shipping-icon">
+                                <img src="{% static 'images/shipping-icon/2.png' %}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-text">
+                                <h2>Thanh toán an toàn</h2>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Li's Shipping Inner Box Area End Here -->
+                    <!-- Begin Li's Shipping Inner Box Area -->
+                    <div class="col-lg-3 col-md-6 col-sm-6 pb-xs-30">
+                        <div class="li-shipping-inner-box">
+                            <div class="shipping-icon">
+                                <img src="{% static 'images/shipping-icon/3.png' %}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-text">
+                                <h2>Thương hiệu uy tín</h2>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Li's Shipping Inner Box Area End Here -->
+                    <!-- Begin Li's Shipping Inner Box Area -->
+                    <div class="col-lg-3 col-md-6 col-sm-6 pb-xs-30">
+                        <div class="li-shipping-inner-box">
+                            <div class="shipping-icon">
+                                <img src="{% static 'images/shipping-icon/4.png' %}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-text">
+                                <h2>Hỗ trợ 24/7</h2>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Li's Shipping Inner Box Area End Here -->
+                </div>
+            </div>
+            <!-- Footer Shipping Area End Here -->
+        </div>
+    </div>
+    <!-- Footer Static Top Area End Here -->
+
+    <!-- Begin Footer Static Middle Area -->
+    <div class="footer-static-middle">
+        <div class="container">
+            <div class="footer-logo-wrap pt-50 pb-35">
+                <div class="row">
+                    <!-- Begin Footer Block Area -->
+                    <div class="col-lg-4">
+                        <div class="footer-block">
+                            <h3 class="footer-block-title">Theo dõi chúng tôi tại</h3>
+                            <ul class="social-link">
+                                <li class="twitter">
+                                    <a href="https://twitter.com/" data-toggle="tooltip" target="_blank"
+                                       title="Twitter">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li class="rss">
+                                    <a href="https://rss.com/" data-toggle="tooltip" target="_blank" title="RSS">
+                                        <i class="fa fa-rss"></i>
+                                    </a>
+                                </li>
+                                <li class="google-plus">
+                                    <a href="https://www.plus.google.com/discover" data-toggle="tooltip" target="_blank"
+                                       title="Google Plus">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </li>
+                                <li class="facebook">
+                                    <a href="https://www.facebook.com/" data-toggle="tooltip" target="_blank"
+                                       title="Facebook">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li class="youtube">
+                                    <a href="https://www.youtube.com/" data-toggle="tooltip" target="_blank"
+                                       title="Youtube">
+                                        <i class="fa fa-youtube"></i>
+                                    </a>
+                                </li>
+                                <li class="instagram">
+                                    <a href="https://www.instagram.com/" data-toggle="tooltip" target="_blank"
+                                       title="Instagram">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Footer Block Area End Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Static Middle Area End Here -->
+
+    <!-- Begin Footer Static Bottom Area -->
+    <div class="footer-static-bottom pt-55 pb-55">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Begin Footer Links Area -->
+                    <div class="footer-links">
+                        <ul>
+                            <li><a href="#">Online Shopping</a></li>
+                            <li><a href="#">Promotions</a></li>
+                            <li><a href="#">My Orders</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Customer Service</a></li>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Most Populars</a></li>
+                            <li><a href="#">New Arrivals</a></li>
+                            <li><a href="#">Special Products</a></li>
+                            <li><a href="#">Manufacturers</a></li>
+                            <li><a href="#">Our Stores</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Payments</a></li>
+                            <li><a href="#">Warantee</a></li>
+                            <li><a href="#">Refunds</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Discount</a></li>
+                            <li><a href="#">Refunds</a></li>
+                            <li><a href="#">Policy Shipping</a></li>
+                        </ul>
+                    </div>
+                    <!-- Footer Links Area End Here -->
+                    <!-- Begin Footer Payment Area -->
+                    <div class="copyright text-center">
+                        <a href="#">
+                            <img src="{% static 'images/payment/1.png' %}" alt="">
+                        </a>
+                    </div>
+                    <!-- Footer Payment Area End Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Static Bottom Area End Here -->
+</div>
+
+<!-- jQuery-V1.12.4 -->
+<script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+<!-- Popper js -->
+<script src="{% static 'js/vendor/popper.min.js' %}"></script>
+<!-- Bootstrap V4.1.3 Fremwork js -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- Ajax Mail js -->
+<script src="{% static 'js/ajax-mail.js' %}"></script>
+<!-- Meanmenu js -->
+<script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+<!-- Wow.min js -->
+<script src="{% static 'js/wow.min.js' %}"></script>
+<!-- Slick Carousel js -->
+<script src="{% static 'js/slick.min.js' %}"></script>
+<!-- Owl Carousel-2 js -->
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<!-- Magnific popup js -->
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Isotope js -->
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+<!-- Imagesloaded js -->
+<script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+<!-- Mixitup js -->
+<script src="{% static 'js/jquery.mixitup.min.js' %}"></script>
+<!-- Countdown -->
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<!-- Counterup -->
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<!-- Waypoints -->
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+<!-- Barrating -->
+<script src="{% static 'js/jquery.barrating.min.js' %}"></script>
+<!-- Jquery-ui -->
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<!-- Venobox -->
+<script src="{% static 'js/venobox.min.js' %}"></script>
+<!-- Nice Select js -->
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<!-- ScrollUp js -->
+<script src="{% static 'js/scrollUp.min.js' %}"></script>
+<!-- Main/Activator js -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

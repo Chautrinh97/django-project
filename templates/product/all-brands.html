@@ -1,0 +1,111 @@
+{% extends 'product/../base.html' %}
+{% load humanize %}
+{% load pagination_tag %}
+{% block title %}Tất cả thương hiệu{% endblock %}
+{% block content %}
+    <!-- Begin Body Wrapper -->
+    <div class="body-wrapper">
+        <!-- Begin Li's Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <ul>
+                        <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                        <li class="active">Tất cả thương hiệu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Li's Breadcrumb Area End Here -->
+        <!-- Begin Li's Content Wraper Area -->
+        <div class="content-wraper pt-60 pb-60 pt-sm-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 order-1 order-lg-1">
+                        <div class="shop-products-wrapper">
+                            <div class="tab-content">
+                                <div id="list-view" class="product-list-view">
+                                    <div class="row">
+                                        {% if brands %}
+                                            <div class="col">
+                                                {% for brand in brands %}
+                                                    <div class="row product-layout-list">
+                                                        <div class="col-lg-2 col-md-4 ">
+                                                            <div class="product-image">
+                                                                <a href="{% url 'products-by-brand' slug=brand.slug %}">
+                                                                    <img src="{{ brand.imageURL }}"
+                                                                         alt="Brand Logo">
+                                                                </a>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-5 text-center">
+                                                            <div class="product_desc">
+                                                                <h5>
+                                                                    <a class="product_name"
+                                                                       href="{% url 'products-by-brand' slug=brand.slug %}">{{ brand.name }}</a>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col">
+                                                Không có thương hiệu nào.
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if brands.paginator.count %}
+                                    <div class="paginatoin-area">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 pt-xs-15">
+                                                <p>Hiện {{ brands.start_index }}-{{ brands.end_index }} trong tổng
+                                                    số {{ brands.paginator.count }} thương hiệu.</p>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <ul class="pagination-box pt-xs-20 pb-xs-15">
+                                                    {% if brands.has_previous %}
+                                                        <li><a href="?page=1" class="First">Đầu</a></li>
+                                                        <li><a href="?page={{ brands.previous_page_number }}"><i
+                                                                class="fa fa-angle-double-left"></i></a></li>
+                                                    {% endif %}
+                                                    {% if brands.paginator.num_pages > 1 %}
+                                                        {% for i in brands.paginator.page_range %}
+                                                            {% if i == brands.number %}
+                                                                <li class="active"><a
+                                                                        href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                                                                </li>
+                                                            {% else %}
+                                                                <li>
+                                                                    <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if brands.has_next %}
+                                                        <li>
+                                                            <a href="?page={{ brands.next_page_number }}"><i
+                                                                    class="fa fa-angle-double-right"></i></a></li>
+                                                        <li>
+                                                            <a href="?page={{ brands.paginator.num_pages }}"
+                                                               class="Last">Cuối</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- shop-products-wrapper end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Content Wraper Area End Here -->
+    </div>
+    <!-- Body Wrapper End Here -->
+{% endblock %}
