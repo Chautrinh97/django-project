@@ -1,0 +1,140 @@
+{% extends 'customer/../base.html' %}
+{% load humanize %}
+{% load math_tag %}
+{% block title %} Chi tiết đơn hàng {% endblock %}
+{% block content %}
+    <div class="body-wrapper">
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <ul>
+                        <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                        <li class="active"> Chi tiết đơn hàng</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="Shopping-cart-area pt-60 pb-60">
+            <div class="container">
+                <div class="row d-flex justify-content-start">
+                    <div class="col-8 col-lg-8">
+                        <div class="your-order">
+                            <h3>Thông tin đơn hàng</h3>
+                            <div class="row product-layout-list d-flex align-items-baseline">
+                                <div class="col-4 col-lg-4 ">
+                                    <div class="product-image">
+                                        Tên người nhận
+                                    </div>
+                                </div>
+                                <div class="col-4 col-lg-4">
+                                    <div class="product_desc">
+                                        <h5>
+                                            {{ order.receiver_name }}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row product-layout-list d-flex align-items-baseline">
+                                <div class="col-l4 col-lg-4 ">
+                                    <div class="product-image">
+                                        Số điện thoại người nhận
+                                    </div>
+                                </div>
+                                <div class="col-4 col-lg-4">
+                                    <div class="product_desc">
+                                        <h5>
+                                            {{ order.receiver_phone }}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row product-layout-list d-flex align-items-baseline">
+                                <div class="col-4 col-lg-4 ">
+                                    <div class="product-image">
+                                        Địa chỉ nhận hàng
+                                    </div>
+                                </div>
+                                <div class="col-8 col-lg-8">
+                                    <div class="product_desc">
+                                        <h5>
+                                            {{ order.shipping_address }}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row product-layout-list d-flex align-items-baseline">
+                                <div class="col-4 col-lg-4 ">
+                                    <div class="product-image">
+                                        Tổng cộng
+                                    </div>
+                                </div>
+                                <div class="col-4 col-lg-4">
+                                    <div class="product_desc">
+                                        <h4>
+                                            {{ order_items|ttal|floatformat:2|intcomma }}đ
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="li-product-thumbnail">Ảnh</th>
+                                        <th class="cart-product-name">Tên sản phẩm</th>
+                                        <th class="li-product-price">Đơn giá</th>
+                                        <th class="li-product-quantity">Số lượng</th>
+                                        <th class="li-product-subtotal">Tổng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in order_items %}
+                                        <input type="hidden" name="product-id"
+                                               value="{% if item.product_id %}{{ item.product_id }}{% endif %}">
+                                        <tr>
+                                            <td class="li-product-thumbnail">
+                                                <a href="
+
+                                                        {% if item.product %}{% url 'single-product' slug=item.product.slug %}{% endif %}">
+                                                    <img src="
+
+                                                            {% if item.product %}{{ item.product.images.first.imageURL }}{% endif %}"
+                                                         class="cart-product-image" alt="Product Image">
+                                                </a>
+                                            </td>
+                                            <td class="li-product-name"><a
+                                                    href="
+
+                                                            {% if item.product %}{% url 'single-product' slug=item.product.slug %}{% endif %}">{{ item.product_name }}</a>
+                                            </td>
+                                            <td class="li-product-price"><span
+                                                    class="amount">{{ item.price }} đ</span>
+                                            </td>
+                                            <td class="quantity">
+                                                    <span
+                                                            class="amount">{{ item.quantity }}</span>
+                                            </td>
+                                            <td><span
+                                                    class="amount cart-total-price">{{ item.quantity|mul:item.price|floatformat:2|intcomma }} đ</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

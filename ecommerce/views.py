@@ -3,7 +3,7 @@ from django.views import View
 from django.http import JsonResponse
 from datetime import timedelta
 from .models import *
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum, F
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_str
@@ -102,6 +102,20 @@ class ProductsCart(View):
                     return render(request, 'product/cart.html', context)
                 return redirect('/checkout/')
             return redirect('/cart/')
+
+class OrderDetail(View):
+    def get(self,request):
+        order_id = request.GET.get('id')
+        if 'customer' in request.session:
+            order = PurchaseOrder.objects.get(id=order_id)
+            order_items = PurchaseOrderItem.objects.filter(purchase_order=order)
+
+            context = {
+                'order':order,
+                'order_items':order_items,
+            }
+            return render(request, 'customer/order-detail.html', context)
+        return redirect(f'/login/?next=/order-detail/?id={order_id}')
 
 
 class Checkout(View):
@@ -704,7 +718,26 @@ class PersonalInfo(View):
             return redirect('/login/')
         uid = request.session.get('customer')
         customer = Customer.objects.get(pk=uid)
-        return render(request, 'customer/personal.html', {'customer': customer})
+        pending_orders = PurchaseOrder.objects.filter(customer=customer, status='PENDING').annotate(
+            total_price=Sum(F('purchase_order_items__quantity') * F('purchase_order_items__price'))
+        )
+        delivering_orders = PurchaseOrder.objects.filter(customer=customer, status='DELIVERING').annotate(
+            total_price=Sum(F('purchase_order_items__quantity') * F('purchase_order_items__price'))
+        )
+        delivered_orders = PurchaseOrder.objects.filter(customer=customer, status='DELIVERED').annotate(
+            total_price=Sum(F('purchase_order_items__quantity') * F('purchase_order_items__price'))
+        )
+        canceled_orders = PurchaseOrder.objects.filter(customer=customer, status='CANCELED').annotate(
+            total_price=Sum(F('purchase_order_items__quantity') * F('purchase_order_items__price'))
+        )
+        context = {
+            'customer': customer,
+            'pending_orders': pending_orders,
+            'delivering_orders': delivering_orders,
+            'delivered_orders': delivered_orders,
+            'canceled_orders': canceled_orders,
+        }
+        return render(request, 'customer/personal.html', context)
 
     def post(self, request):
         tab = request.POST.get('tab')

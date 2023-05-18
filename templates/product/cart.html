@@ -2,9 +2,19 @@
 {% load humanize %}
 {% load math_tag %}
 {% load dictionary_tag %}
-{% block title %} {{ brand.name }} {% endblock %}
+{% block title %} Giỏ hàng {% endblock %}
 {% block content %}
     <div class="body-wrapper">
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <ul>
+                        <li><a href="{% url 'home-page' %}">Trang chủ</a></li>
+                        <li class="active"> Giỏ hàng </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="Shopping-cart-area pt-60 pb-60">
             <div class="container">
                 <div class="row">

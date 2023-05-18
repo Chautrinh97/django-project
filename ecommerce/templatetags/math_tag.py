@@ -16,3 +16,9 @@ def total(value):
     for key, data in value.items():
         total+=data['quantity']*data['price']
     return total
+@register.filter
+def ttal(value):
+    total_price = 0
+    for item in value:
+        total_price += item.price * item.quantity
+    return total_price

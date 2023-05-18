@@ -121,12 +121,156 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                     <div id="purchaseOrder" class="tab-pane" role="tabpanel">
-
+                        <div class="row">
+                            <div class="col-3 col-lg-3">
+                                <div class="nav flex-column nav-pills text-center" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" data-toggle="pill" role="tab"
+                                       href="#pendingOrder" aria-selected="true" aria-controls="#pendingOrder">
+                                        <span class="order-menu">Đơn chờ duyệt</span>
+                                    </a>
+                                    <a class="nav-link" data-toggle="pill" role="tab"
+                                       href="#deliveringOrder" aria-selected="false" aria-controls="#deliveringOrder">
+                                        <span class="order-menu">Đơn đang vận chuyển</span>
+                                    </a>
+                                    <a class="nav-link" data-toggle="pill" role="tab"
+                                       href="#deliveredOrder" aria-selected="false" aria-controls="#deliveredOrder">
+                                        <span class="order-menu">Đơn đã giao</span>
+                                    </a>
+                                    <a class="nav-link" data-toggle="pill" role="tab"
+                                       href="#cancelOrder" aria-selected="false" aria-controls="#cancelOrder">
+                                        <span class="order-menu">Đơn đã hủy</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class ="col-9 col-lg-9">
+                                <div class="tab-content">
+                                    <div id="pendingOrder" class="tab-pane fade active show" role="tabpanel">
+                                        <div class="table-content table-striped">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Người nhận</th>
+                                                    <th>Thời gian tạo</th>
+                                                    <th>Tổng tiền</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if pending_orders %}
+                                                {% for order in pending_orders %}
+                                                    <tr>
+                                                        <td><a href="{% url 'order-detail'%}?id={{ order.id }}">#DH{{ order.id }}</a></td>
+                                                        <td>{{ order.receiver_name }}</td>
+                                                        <td>{{ order.ordered_time }}</td>
+                                                        <td>{{ order.total_price|floatformat:2|intcomma }} đ</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="4">Không có đơn hàng đang chờ nào.</td>
+                                                </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="deliveringOrder" class="tab-pane fade" role="tabpanel">
+                                        <div class="table-content table-striped">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Người nhận</th>
+                                                    <th>Thời gian xác nhận</th>
+                                                    <th>Tổng tiền</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if delivering_orders %}
+                                                {% for order in delivering_orders %}
+                                                    <tr>
+                                                        <td><a href="{% url 'order-detail'%}?id={{ order.id }}">#DH{{ order.id }}</a></td>
+                                                        <td>{{ order.receiver_name }}</td>
+                                                        <td>{{ order.confirmed_time }}</td>
+                                                        <td>{{ order.total_price|floatformat:2|intcomma }} đ</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="4">Không có đơn hàng đang vận chuyển nào.</td>
+                                                </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="deliveredOrder" class="tab-pane fade" role="tabpanel">
+                                        <div class="table-content table-striped">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Người nhận</th>
+                                                    <th>Thời gian giao</th>
+                                                    <th>Tổng tiền</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if delivered_orders %}
+                                                {% for order in delivered_orders %}
+                                                    <tr>
+                                                        <td><a href="{% url 'order-detail'%}?id={{ order.id }}">#DH{{ order.id }}</a></td>
+                                                        <td>{{ order.receiver_name }}</td>
+                                                        <td>{{ order.shipped_time }}</td>
+                                                        <td>{{ order.total_price|floatformat:2|intcomma }} đ</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="4">Không có đơn hàng đã giao nào.</td>
+                                                </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="cancelOrder" class="tab-pane fade" role="tabpanel">
+                                        <div class="table-content table-striped">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Người nhận</th>
+                                                    <th>Thời gian tạo</th>
+                                                    <th>Tổng tiền</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if canceled_orders %}
+                                                {% for order in canceled_orders %}
+                                                    <tr>
+                                                        <td><a href="{% url 'order-detail'%}?id={{ order.id }}">#DH{{ order.id }}</a></td>
+                                                        <td>{{ order.receiver_name }}</td>
+                                                        <td>{{ order.ordered_time }}</td>
+                                                        <td>{{ order.total_price|floatformat:2|intcomma }} đ</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="4">Không có đơn hàng đã hủy nào.</td>
+                                                </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
+                    </div>
                 </div>
             </div>
         </section>
