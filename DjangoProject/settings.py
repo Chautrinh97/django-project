@@ -212,7 +212,7 @@ MESSAGE_TAGS = {
 EMAIL_FROM_USER = 'trinhdc197@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'trinhdc197@gmail.com'
-EMAIL_HOST_PASSWORD = 'ykysfipffplilxfx'
+EMAIL_HOST_PASSWORD = 'kysfipffplilxfxp'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
